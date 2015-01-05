@@ -36,8 +36,8 @@
 %\rhead{CSAP WP 2013/P27}
 \lhead{}
 \rhead{}
-\lfoot{Appendix E -- Model Equations}
-\rfoot{Silvergray Rockfish} % WP 2010/035}
+%\lfoot{Appendix D -- Model Equations}
+%\rfoot{Silvergray Rockfish} % WP 2010/035}
 \renewcommand{\footrulewidth}{0.4pt}
 \renewcommand{\headrulewidth}{0pt}
 
@@ -57,8 +57,8 @@
 \geometry{verbose,tmargin=2.4cm,bmargin=2.4cm,lmargin=2.6cm,rmargin=2.6cm} % For ecology margin widths, they had a4paper after verbose, I tried letter, didn't work so deleting. all were 2.4, but for A4, so setting here to 2.6 left and right
 
 
-  \def\AppLet{E}                   % Appendix letter
-  \def\StartP{109}                 % page start
+  \def\AppLet{D}                   % Appendix letter
+  \def\StartP{96}                 % page start
   \def\finalYr{2014}               % final year in model
   \def\gcomm{7}                    % index g for commercial fishery (if more than one, this will need to be revised)
  %\def\schematic{1~}               % Figure number for schematic fig
@@ -156,15 +156,15 @@
 % {\bf MODEL OUTLINE AND ASSUMPTIONS}
 {\bf INTRODUCTION}
 
- Stock Assessment modelling was conducted using the Integrated Statistical Catch Age Model (iSCAM), developed by Steven J.D. Martell (Martell et al. 2011).  iSCAM is written in AD Model Builder and the source code and documentation for the original iSCAM is available at https://github.com/smartell/iSCAM.  iSCAM uses a statistical catch-at-age model implemented in a Bayesian estimation framework.  
+Stock Assessment modelling was conducted using the Integrated Statistical Catch Age Model (iSCAM), developed by Steven J.D. Martell (Martell et al. 2011).  iSCAM is written in AD Model Builder and the source code and documentation for the original iSCAM are available at https://github.com/smartell/iSCAM.  iSCAM uses a statistical catch-at-age model implemented in a Bayesian estimation framework.  
 
-The version of iSCAM used for this assessment is based on a more recent “IPHC-developers” version, also developed by S. Martell, that models males and females separately and includes a length-based option for modelling selectivity (also available at https://github.com/smartell/iSCAM).  Further modifications to the IPHC-developers branch have been made by the first author of this assessment (K.R. Holt) to allow density-dependent natural mortality and non-linear catchability options for Strait of Georgia Lincgod (see https://github.com/krholt/iSCAM-pbs-lingcod).
+The version of iSCAM used for this assessment is based on a more recent “IPHC-developers” version, also developed by S. Martell, that models males and females separately and includes a length-based option for modelling selectivity (also available at https://github.com/smartell/iSCAM).  Further modifications to the IPHC-developers version have been made by the first author of this assessment (K.R. Holt) to allow density-dependent natural mortality and density-dependent catchability options for Strait of Georgia Lincgod (see https://github.com/krholt/iSCAM-pbs-lingcod).
 
 % Not all of these refs may be in my .bib file:
 
 Running of iSCAM and compiliation of results figures was streamlined using the iscam-gui software package developed by Chris Grandin (pers. comm, Pacific Biological Station, Fisheries and Oceans Canada).  iscam-gui is written in R (R Development Core Team, 2012), and provides an R gui interface that allows users to run and show output of multiple iSCAM model runs next to each other.  
 
-This appendix contains the documentation in mathematical form of the underlying iSCAM age-structured model, and its steady state version that is used to calculate reference points, the observation models used in predicting observations, and the components of the objective function that formulate the the objective function that is used to estimate model parameters.  All of the model equations are laid out in tables and are intended to represent the order of operations, or pseudocode, in which to implement the model.  A documented list of symbols used in model equations is given in Table \AppLet.1.  The documentation presented here is a revised version of the iscam user-guide written by S. Martell and available at https://github.com/smartell/iSCAM.  Much of the text and equations have been taken directly from the original users guide, with modifications by K.R. Holt to describe the expansion to a two-sex model and the additional lingcod options.
+This appendix contains the documentation in mathematical form of the underlying iSCAM age-structured model, its steady-state version that is used to calculate reference points, the observation models used in predicting observations, and the components that formulate the objective function that is used to estimate model parameters.  All of the model equations are laid out in tables and are intended to represent the order of operations, or pseudocode, in which to implement the model.  A documented list of symbols used in model equations is given in Table \AppLet.1.  The documentation presented here is a revised version of the iSCAM user-guide written by S. Martell and available at https://github.com/smartell/iSCAM.  Much of the text and equations have been taken directly from the original users guide, with modifications by K.R. Holt to describe the expansion to a two-sex model and the additional Lingcod options.
 
 
 
@@ -172,7 +172,7 @@ This appendix contains the documentation in mathematical form of the underlying 
 
 \subsub{A Steady-State Age-Structured Model}
 
-For the steady-state conditions represented in Table \AppLet.2, we assume the parameter vector $\Theta$ in \eref{df1} is unknown and would eventually be estimated by fitting iSCAM to data.  For a given set of sex-specific growth parameters and maturity-at-age parameters defined by \eref{df2}, growth is assumed to follow von Bertalanffy \eref{df3}, mean weight-at-age is given by the allometric relationship in \eref{df4}, and the age- and sex-specific vulnerability is given by a length-based logistic function \eref{df5}.  Note, there are alternative selectivity functions implemented in iSCAM; the length-based logistic function is shown here because it is used to model selectivity to the only current lingcod fishery in the Strait of Georgia (the recreational fishery with a 65cm minimum size limit) .  Mean fecundity-at-age by sex is assumed to be proportional to the mean weight-at-age of mature fish, where maturity at age is specified by the sex-specific parameters $\dot{a}_s$ and $\dot{\gamma}_s$ for the logistic function.
+For the steady-state conditions represented in Table \AppLet.2, we assume the parameter vector $\Theta$ in \eref{df1} is unknown and would eventually be estimated by fitting iSCAM to data.  For a given set of sex-specific growth parameters and maturity-at-age parameters defined by \eref{df2}, growth is assumed to follow the von Bertalanffy relationship \eref{df3}, mean weight-at-age is given by the allometric relationship in \eref{df4}, and the age- and sex-specific vulnerability is given by a length-based logistic function \eref{df5}.  Note, there are alternative selectivity functions implemented in iSCAM; the length-based logistic function is shown here because it is used to model selectivity to the only current lingcod fishery in the Strait of Georgia (the recreational fishery with a 65cm minimum size limit) .  Mean fecundity-at-age by sex \eref{df6} is assumed to be proportional to the mean weight-at-age of mature fish, where maturity at age is specified by the sex-specific parameters $\dot{a}_s$ and $\dot{\gamma}_s$ for the logistic function.
 
 \clearpage
 
@@ -182,7 +182,7 @@ For the steady-state conditions represented in Table \AppLet.2, we assume the pa
 % \baselineskip 2.5ex \vspace{-2ex}
 
 \noindent \begin{tabular}{lll} 
-\multicolumn{3}{l} {\it {Table \AppLet.1 A list of symbols, constants and description for variables used in iSCAM.  The symbol * after a value indicates that the fixed value was changed for different 2014 assessment scenarios.}} \\ 
+\multicolumn{3}{l} {\it {Table \AppLet.1 A list of symbols, constants and variable descriptions for variables used in iSCAM.}} \\ 
  & \\
 \hline
 \multicolumn{1}{l}{\bf Symbol} & 
@@ -199,15 +199,15 @@ $k$ & & Index for gear\\
 $S$             &2             & Number of sexes\\
 $\acute{a}, A$  & 1, 20         & Youngest and oldest age class ($A$ is a plus group)\\
 $\acute{t}, T$  & 1927, 2013    & First and last year of catch data\\
-$K$             & 5             & Number of gears including survey gears\\
+$K$             & 3             & Number of gears including survey gears\\
 \multicolumn{3}{l}{\underline{Observations (data)}}\\
 $C_{k,t}$       & & catch in weight by gear $k$ in year $t$\\
 $I_{k,t}$       & & relative abundance index for gear $k$ in year $t$\\
 %$p_{k,t,a}$     & & observed proportion-at-age $a$ in year $t$ for gear $k$\\
 \multicolumn{3}{l}{\underline{Fixed parameters}}\\
-$M$                 &0.20* & Instantaneous natural mortality rate \\
+$M$                 &0.20 & Instantaneous natural mortality rate \\
 %$M_{zero}$                 &0.18* & Instantaneous natural mortality rate at zero abundance \\
-$\rho$              &0.98* & Fraction of the total variance associated with observation error\\
+$\rho$              &0.70 & Fraction of the total variance associated with observation error\\
 %$\vec{\gamma}_k$    & & Vector of selectivity parameters for gear $k$ \\
 $\hat{a}_k, \hat{\gamma}_k$    &See Table \AppLet.4 & Selectivity parameters for gear $k$ \\
 %$\lambda_{pow  \;  k}$    &See Table x.x & Exponent determining degree of denstiy-dependent catchability for gear $k$ \\
@@ -235,7 +235,7 @@ $t_{o s}$ & -0.001 / -0.001 & Theoretical age at zero length for males / females
 $\acute{a}_s$ & 1.13e{-11} / 1.13e{-11} &  Scaler in length- weight allometry (mm to 100's of kg)\\
 $\acute{b}_s$ & 3.329 / 3.329 &Power parameter in length-weight allometry for males / females\\
 $\dot{a}_s$ & 2.0 / 5.0 & Age at 50\% maturity for males / females \\
-$\acute{\gamma}_s$ & 0.001 / 0.20 & Standard deviation at 50\% maturity for males / females\\
+$\acute{\gamma}_s$ & 0.001 / 0.35 & Standard deviation at 50\% maturity for males / females\\
 \hline
 \end{tabular}
 \newp % \baselineskip \mybaselineskip
@@ -304,7 +304,7 @@ fecundity and Ricker type recruitment.}% \tabline
 \begin{array}{lll}
 1 / S, & a=1\\
 \hat{\iota}_{a-1,s}e^{-M -F_e v_{a-1,s}}, & a > 1 \\
-\hat{\iota}_{a-1,s}e^{-M -F_e v_{a-1,s}} / (1-e^{M-F_e v_{a,s}}), & a = A
+\hat{\iota}_{a-1,s}e^{-M -F_e v_{a-1,s}} / (1-e^{-M-F_e v_{a,s}}), & a = A
 \label{df8}
 \end{array}
 \right.
@@ -349,7 +349,7 @@ fecundity and Ricker type recruitment.}% \tabline
 \newp
 
 
-Survivorship for unfished and fished populations is defined by \eref{df7} and \eref{df8}, respectively.  Note that fished survivorship is sex-specifric to allow for sex-specific $v_{a,s}$ when the length-based logistic function is used to model vulnerability.  It is assumed that all individuals ages $A$ and older (i.e., the plus group) have the same total mortality rate.  The incidence functions refer to the life-time or per-recruit quantities such as spawning biomass per recruit ($\phi_E$) or vulnerable biomass per recruit ($\phi_b$).  Note that upper and lower case subscripts denote unfished and fished conditions, respectively.  Spawning biomass per recruit is given by \eref{df9}, the vulnerable biomass per recruit is given by \eref{df10} and the per recruit yield to the fishery is given by \eref{df11}.  Unfished recruitment is given by \eref{df12} and the steady-state equilibrium recruitment  for a given fishing mortality rate $F_e$ is given by \eref{df13}.  Note that in \eqref{df13} we assume that recruitment follows a  Ricker stock recruitment model of the form:
+Survivorship for unfished and fished populations is defined by \eref{df7} and \eref{df8}, respectively.  Note that fished survivorship is sex-specific to allow for sex-specific $v_{a,s}$ when the length-based logistic function is used to model vulnerability.  It is assumed that all individuals ages $A$ and older (i.e., the plus group) have the same total mortality rate.  The incidence functions refer to the life-time or per-recruit quantities such as spawning biomass per recruit ($\phi_E$) or vulnerable biomass per recruit ($\phi_B$).  Upper and lower case subscripts on incidence functions denote unfished and fished conditions, respectively.  Spawning biomass per recruit is given by \eref{df9}, the vulnerable biomass per recruit is given by \eref{df10}, and the per recruit yield to the fishery is given by \eref{df11}.  Unfished recruitment is given by \eref{df12} and the steady-state equilibrium recruitment  for a given fishing mortality rate $F_e$ is given by \eref{df13}.  Note that in \eqref{df13} we assume that recruitment follows a  Ricker stock recruitment model of the form:
 \[
 R_e=%\begin{cases}
 %    \dfrac{s_o R_e \phi_e}{1+\beta R_e \phi_e},& \mbox{Beverton-Holt}\\[5ex]
@@ -375,42 +375,17 @@ The equilibrium yield for a given fishing mortality rate is \eqref{df14}.  These
 \subsub{MSY-based Reference Points}
 %\subsub{MSY-based Reference Points: Constant $M$}
 
-When defining reference points for this assessment, only the current recreational fishery (with a 65cm size limit) was used to calculate MSY quantities.  In the case of a single fishery such as this, iSCAM calculates $F_{MSY}$ by finding the value of $F_e$ that results in the zero derivative of  \eqref{df14}.  This is accomplished numerically using a Newton-Raphson method where an initial guess for $F_{MSY}$ is set equal to 1.0$M$.  Given an estimate of $F_{MSY}$, other reference points such as MSY are calculated using the equations in Table \AppLet.2.   
+When defining reference points for this assessment, only the current recreational fishery (with a 65cm size limit) was used to calculate MSY quantities.  
 
-A special class library to implement the MSY-based reference point calculations was developed specifically for iSCAM.  Details of this alogorithim, including partial derivatives for the numerical calculation of $F_{MSY}$, are available in the original iscam documentation available at: https://github.com/smartell/iSCAM.     
+A special class library has been added to iSCAM to calculate MSY-based reference points.  For single gear fisheries, $F_{MSY}$ is determined by finding the equilibrium value of $F$, $F_e$, that results in the zero derivative of \eqref{df14} using a Newton-Raphson method. Given an estimate of $F_{MSY}$, other reference points such as MSY are calculated using the equations in Table \AppLet.2.  This procedure has not yet been implemented for the Ricker stock recruitment relationship however, so was not readily available for this assessment.  Instead, a grid-search over a range of $F_e$ values (0.001 to 0.40 in increments of 0.001) was used, and $F_{MSY}$ was identified as the value of $F_e$ producing the highest long-term equilibrium catch using \eqref{df14}.       
 
-%\subsub{MSY-based Reference Points: Density-dependent $M$}
-
-
-\newp % \baselineskip \mybaselineskip
-
+\vsd
+\vsd
 { \bf ANALYTIC METHODS: STATE DYNAMICS}
 
 The estimated parameter vector in iSCAM is defined in \eqref{df15} of Table \AppLet.3.  The unknown parameters $R_0$ and $\kappa$, as well as the fixed parameter $M$, are the leading population parameters that define the overall population scale.  The total variance $\vartheta^2$ is estimated, while the proportion of the total variance that is associated with observation errors $\rho$ is assumed fixed. The total variance is partitioned into observation errors ($\sigma^2$) and process errors ($\tau^2$) using \eqref{df16}.
 
-The unobserved state variables \eqref{df17} include the numbers-at-age in year $t$ of sex $s$ ($N_{t,a,s}$), the spawning stock biomass in year $t$ of sex $s$ ($B_t$), and the total age- and sex-specific total mortality rate ($Z_{t,a,s}$).  
-
-The initial numbers-at-age in the first year \eqref{df18} and the annual recruits \eqref{df19} are treated as estimated parameters and used to initialize the numbers-at-age array.  Recruitment at age-1 is assumed to be 50\% males and 50% females.  When a length-based selectivity function is used (i.e. for the Strait of Georgia Lingcod Recreational Fishery with a 65cm size limit; Table \AppLet.4), age- and sex-specific selectivity for gear type $k$ is a function of the selectivity parameters ($a_k$ and $\gamma_k$, which represent length at 50\% selectivity and the associated standard deviation, respectively) and the sex-specific length-at-age $a$, $l_{a,s}$, as shown in \eqref{df20}.  For the two Strait of Georgia Lingcod fisheries modelled using age-based logisitc selectivity (Table \AppLet.4), the $l_{a,s}$ variable in equation \eqref{df20} is replaced with age $a$, and the selectivity parameters($a_k$ and $\gamma_k$) would be based on mean age of selectivity and the assocaited standard deviation  In this latter case, vulberability at age for these gears would be the same for males and females.  The annual fishing mortality for each gear $k$ in year $t$ is the exponent of the estimated vector $\Gamma_{k,t}$ \eqref{df21}.  The vector of log fishing mortality rate parameters $\Gamma_{k,t}$ is a bounded vector with a minimum value of -30 and an upper bound of 3.0.  In arithmetic space this corresponds to a minimum value of 9.36e-14 and a maximum value of 20.01 for annual fishing mortality rates.  In years where there are 0 reported catches for a given fleet, no corresponding fishing mortality rate parameter is estimated and the implicit assumption is there was no fishery in that year.
-
-State variables in each year are updated using equations \ref{df22}--\ref{df25}, where the spawning biomass is the product of the numbers-at-age and the mature biomass-at-age \eqref{df22}.  The total mortality rate is given by \eqref{df23}, and the total catch (in weight) for each gear is given by \eqref{df24}, assuming that both natural and fishing mortality occur simultaneously throughout the year.  Lingcod catch was not differentiated by sex, so both sexes were combined to calculate a total catch in \eqref{df24}.  The sex-specific numbers-at-age are propagated over time using \eqref{df25}, where members of the plus group (age $A$) are all assumed to have the same total mortality rate.  
-
-Recruitment to age $k$ is assumed to follow a Ricker model for Strait of Gerogia Lingcod \eqref{df26} where the maximum juvenile survival rate ($s_o$) is defined by $s_o=\kappa/\phi_E$.  For the Ricker model, $\beta$ is derived by solving \eqref{df26} for $\beta$ conditional on estimates of $\kappa$ and $R_o$:
-\[
-\beta = \frac{\ln(\kappa)}{R_o \phi_E}
-\]
-
-
-\subsub{Option for Density-Dependent Natural Mortality}
-
-The option to specify density-dependent mortality was added to the version of iSCAM used for this assessment to allow replication of the 2005 assessment for the bridging analysis.  Density-dependent mortality was implemented in the same way as the 2005 assessment (Logan et al. 2005):
-\[
-M_t = M_0 + (M_{zero} - M_0)(1 - \frac{B_t}{B_0})
-\]
-where, $B_t$ is total biomass (males and females combined) in year $t$, $M_t$ is the natural mortality at stock biomass $B_t$, $M_0$ is natural mortality at unfished biomass (i.e., carrying capacity), and $M_{zero}$ is natural mortality at negligible stock size.
-
-Both $M_0$ and $M_zero$ were fixed at the same parameter values assumed by Logan et al. (2005).  $M_0$ was set at 0.2 and $M_zero$ was set at 0.18.
-
-Need to add chages to reference point calculations .....
+The unobserved state variables \eqref{df17} include the numbers-at-age in year $t$ of sex $s$ ($N_{t,a,s}$), the spawning stock biomass in year $t$ of sex $s$ ($B_{t,s}$), and the total age- and sex-specific total mortality rate ($Z_{t,a,s}$).  
 
 \newp % \baselineskip \mybaselineskip
 
@@ -434,7 +409,7 @@ Need to add chages to reference point calculations .....
 
 \bec {\bf Unobserved states} \eec \vspace{1ex}
 
-\beq N_{t,a},\; B_t,\; Z_{t,a}  \label{df17} \eeq \vsd \vsd \vsd
+\beq N_{t,a},\; B_{t,s},\; Z_{t,a}  \label{df17} \eeq \vsd \vsd \vsd
 
 \bec {\bf Initial states} \eec \vspace{1ex}
 
@@ -481,11 +456,22 @@ Need to add chages to reference point calculations .....
 
 \clearpage
 
+%\newp % \baselineskip \mybaselineskip
+
+The initial numbers-at-age in the first year \eqref{df18} and the annual recruits \eqref{df19} are treated as estimated parameters and used to initialize the numbers-at-age array.  Recruitment at age-1 is assumed to be 50\% males and 50\% females.  When a length-based selectivity function is used (i.e. for the Strait of Georgia Lingcod Recreational Fishery with a 65cm size limit; Table \AppLet.4), age- and sex-specific selectivity for gear type $k$ is a function of the selectivity parameters ($a_k$ and $\gamma_k$, which represent length at 50\% selectivity and the associated standard deviation, respectively) and the sex-specific length-at-age $a$, $l_{a,s}$, as shown in \eqref{df20}.  For the two Strait of Georgia Lingcod fisheries modelled using age-based logisitc selectivity (Table \AppLet.4), the $l_{a,s}$ variable in equation \eqref{df20} is replaced with age $a$, and the selectivity parameters($a_k$ and $\gamma_k$) would be based on mean age of selectivity and the assocaited standard deviation  In this latter case, vulberability at age for these gears would be the same for males and females.  The annual fishing mortality for each gear $k$ in year $t$ is the exponent of the estimated vector $\Gamma_{k,t}$ \eqref{df21}.  The vector of log fishing mortality rate parameters $\Gamma_{k,t}$ is a bounded vector with a minimum value of -30 and an upper bound of 3.0.  In arithmetic space this corresponds to a minimum value of 9.36e-14 and a maximum value of 20.01 for annual fishing mortality rates.  In years where there are 0 reported catches for a given fleet, no corresponding fishing mortality rate parameter is estimated and the implicit assumption is there was no fishery in that year.
+
+State variables in each year are updated using equations \ref{df22}--\ref{df25}, where the spawning biomass is the product of the numbers-at-age and the mature biomass-at-age \eqref{df22}.  The total mortality rate is given by \eqref{df23}, and the total catch (in weight) for each gear is given by \eqref{df24}, assuming that both natural and fishing mortality occur simultaneously throughout the year.  In cases in which catch data is available in numberd instead of weight (as specified by the user), the $w_{as}$ term is omitted from \eqref{df24}.  Lingcod catch was not differentiated by sex, so both sexes were combined to calculate a total catch in \eqref{df24}.  The sex-specific numbers-at-age are propagated over time using \eqref{df25}, where members of the plus group (age $A$) are all assumed to have the same total mortality rate.  
+
+Recruitment to age $k$ is assumed to follow a Ricker model for Strait of Gerogia Lingcod \eqref{df26} where the maximum juvenile survival rate ($s_o$) is defined by $s_o=\kappa/\phi_E$.  For the Ricker model, $\beta$ is derived by solving \eqref{df26} for $\beta$ conditional on estimates of $\kappa$ and $R_o$:
+\[
+\beta = \frac{\ln(\kappa)}{R_o \phi_E}
+\]
+
 % ********************** Table 4 ************************************
 \begin{table}[tp]
 \leftskip=1.5em
 \parindent=-1.5em
-{\it Table \AppLet.4. Definition of datasets denoted by gear index $k$ in Tables \AppLet.1 - \AppLet.3 .}
+{\it Table \AppLet.4. Definition of datasets denoted by gear index $k$ in Tables \AppLet.1 - \AppLet.3.  Note that the recreational fishery was modelled using two different gear types to account for the introduction of a 65cm minimum size limit in 1991.  The recreational CPUE index was modelled using gear 2 because the catch component included both retained and discarded catch, which means that the introduction of a 65cm size limit would not be expected to affect selectivity.}
 %\vsd \\
 \leftskip=0em
 \parindent=-0em
@@ -509,10 +495,30 @@ $k$	    &Dataset  	       &  Catch Data  & CPUE Index  &  Type           &  Para
 
 \medskip
 
+\newp
+\subsub{Option for Density-Dependent Natural Mortality}
+
+The option to specify density-dependent mortality was added to the version of iSCAM used for this assessment to allow replication of the 2005 assessment.  Density-dependent mortality was implemented in the same way as the 2005 assessment (Logan et al. 2005):
+\[
+M_t = M_0 + (M_1 - M_0)(1 - \frac{B_t}{B_0})
+\]
+where, $B_t$ is total biomass (males and females combined) in year $t$, $M_t$ is the natural mortality at stock biomass $B_t$, $M_0$ is natural mortality at unfished biomass (i.e., carrying capacity), and $M_1$ is natural mortality at negligible stock size.  Both $M_0$ and $M_1$ were fixed at the same parameter values assumed by Logan et al. (2005).  $M_0$ was set at 0.2 and $M_1$ was set at 0.18.
+
+In the case of density-depedent mortality, an additional step was required when calculating reference points to determine the rate of natural mortality at equlibrium, $M_e$, conditional on each $F_e$ value used in the grid search.  Based on the above density-dependent equation:
+\[
+M_e = M_0 + (M_1 - M_0)(1 - \frac{B_e}{B_0})
+\]
+where, $B_e$ is total biomass at equilibrium. Note that there is a circular relationship between $M_e$ and $B_e$ because calculation of $M_e$ requires a value for $B_e$ and vice versa.  To deal with this circularity, it was necessary to use a numerical algorithm that iteratively found the level of depletion at equilibrium (i.e.,$B_e$ / $B_0$) conditional on $F_e$ before solving $M_e$.  Once $M_e$ conditional on $F_e$ was determined, other equilbrium quantities were determined as described in the reference point section of this appendix by replacing $M$ with $M_e$ in Table \AppLet.2.
+
+
+
+\vsd
+\vsd
+
 
 { \bf RESIDUALS, LIKELIHOODS, AND OBJECTIVE FUNCTION VALUE COMPONENTS}
 
-There are three major components to the overall objective function that are minimized while iSCAM is performing maximum likelihood estimation.  These components consist of the likelihood of the data, prior distributions and penalty functions that are invoked to regularize the solution during intermediate phases of the non-linear parameter estimation.  This section discusses each of these in turn, starting first with the residuals between observed and predicted states followed by the negative loglikelihood that is minimized.
+There are three major components to the overall objective function that are minimized while iSCAM is performing maximum likelihood estimation.  These components consist of the likelihood of the data, prior distributions, and penalty functions that are invoked to regularize the solution during intermediate phases of the non-linear parameter estimation.  This section discusses each of these in turn, starting first with the residuals between observed and predicted states followed by the negative loglikelihood that is minimized.
 
 \subsub{Catch Data}
 
@@ -520,21 +526,21 @@ It is assumed that the measurement errors in the catch observations are log-norm
 \begin{equation}\label{df27}
 \eta_{k,t}=\ln(C_{k,t}+o) -  \ln(\hat{C}_{k,t}+o),
 \end{equation}
-where $o$ is  a small constant (1.e-10) to ensure the residual is defined in the case of a 0 catch observation.  The residuals are assumed to be normally distributed with a user-specified standard deviation $\sigma_{C}$.  At present, it is assumed that observed catches for each gear $k$  have the same standard deviation.  The negative loglikelihood (ignoring the scaling constant) for the catch data is given by:
+where $o$ is  a small constant (1.e-10) to ensure the residual is defined in the case of a zero catch observation.  The residuals are assumed to be normally distributed with a user-specified standard deviation $\sigma_{C}$.  At present, it is assumed within iSCAM that observed catches for each gear $k$  have the same standard deviation.  The negative loglikelihood (ignoring the scaling constant) for the catch data is given by:
 \begin{equation}\label{df28}
 \ell_C = \sum_k\left[  T_k\ln(\sigma_C)+\frac{\sum_t(\eta_{k,t})^2}{2\sigma_C^2}\right],
 \end{equation}
 where $T_k$ is the total number of catch observations for gear type $k$.
 
-Commercial fishery catch data for Area 4B Lingcod are available in biomass units (tonnes), while catch from recreational fisheries are reported as numbers (pieces).  iSCAM allows users to specify catch units as biomass or numbers; however, to accomodate the constraint that catches from all gears have the same standard deviation, we re-scale recreational catch to 10's of pieces so that it would be on the same scale as catch in tonnes from the commercial fishery.  This re-scaling required us to specifythe parameters for the allometric weight-length relationship in \eqref{df4} in units of mm to 100's of kg.
+Commercial fishery catch data for Area 4B Lingcod are available in biomass units (tonnes), while catch from recreational fisheries are reported as numbers (pieces).  iSCAM allows users to specify catch units as biomass or numbers; however, to accomodate the constraint that catches from all gears have the same standard deviation, we re-scale recreational catch to 10's of pieces so that it would be on the same scale as catch in tonnes from the commercial fishery.  This re-scaling required us to specify the parameters for the allometric weight-length relationship in \eqref{df4} in units of mm to 100's of kg.
 
 \subsub{Relative Abundance Data}
 
-The relative abundance data are assumed to be proportional to biomass that is vulnerable to the sampling gear:
+In the absence of density-dependent catchability, the relative abundance data are assumed to be proportional to the biomass that is vulnerable to the sampling gear:
 \begin{equation}\label{df29}
  V_{k,t} = \sum_s \sum_a N_{t,a,s} e^{-\lambda_{k,t} Z_{t,a,s}} v_{k,a,s} w_{a,s},
 \end{equation}
-where $v_{k,a,s}$ is the sex- and age-specific selectivity of gear $k$, and $w_{a,s}$ is the mean-weight-at-age for sex $s$.  A user-specified fraction of the total mortality $\lambda_{k,t}$ adjusts the numbers-at-age to correct for survey timing.  We set $\lambda_{k,t}$ to 0.5 for all index observations in the commercial and recreational CPUE indices since fishery catch and the collection of CPUE data are the same process, and natural mortality occures throughout the fishing season. 
+where $v_{k,a,s}$ is the sex- and age-specific selectivity of gear $k$, and $w_{a,s}$ is the mean-weight-at-age for sex $s$.  A user-specified fraction of the total mortality $\lambda_{k,t}$ adjusts the numbers-at-age to correct for survey timing.  We set $\lambda_{k,t}$ to 0.5 for all index observations in the commercial and recreational CPUE indices since fishery catch and the collection of CPUE data are the same process, and natural mortality occurs throughout the fishing season. 
 
 The residuals between the observed and predicted relative abundance index is given by:
 \begin{equation}\label{df30}
@@ -547,26 +553,26 @@ where $I_{k,t}$ is the observed relative abundance index, $q_k$ is the catchabil
 where $N_k$ is the number of relative abundance observations for index $k$ (see Walters and Ludwig 1994 for more information). The negative loglikelihood for relative abundance data is given by:
 \begin{align}
 \ell_I &= \sum_k \sum_{t \in I_{k,t}}  \ln(\sigma_{k,t})+\frac{\epsilon_{k,t}^2}{2\sigma_{k,t}^2} \label{df31}\\
-&\mbox{where}\nonumber\\
-\sigma_{k,t} &= \frac{\rho \varphi^2}{ \omega_{k,t}},  \nonumber
+&\mbox{where,}\nonumber\\
+\sigma_{k,t} &= \frac{\rho \varphi^2}{ \varpi_{k,t}},  \nonumber
 \end{align}
-where $\rho \varphi^2$ is the proportion of the total error that is associated with observation errors, and $\omega_{k,t}$ is a user specified relative weight for observation $t$ from gear $k$.  The $ \omega_{k,t}$ terms allow each observation to be weighted relative to the total error $\rho \varphi^2$; for example, to omit a particular observation, set $\omega_{k,t}=0$, or to give 2 times the weight, then set  $\omega_{k,t}=2.0$. For the current assessment, we assumed all observations have the same variance by setting  $\omega_{k,t}=1$.  Note that if  $\omega_{k,t}=0$ then equation \eqref{df31} is undefined; therefore, iSCAM adds a small constant to  $\omega_{k,t}$ (1.e-10), which is equivalent to assuming an extremely large variance)  to ensure the likelihood can be evaluated.
+where $\rho \varphi^2$ is the proportion of the total error that is associated with observation errors, and $\omega_{k,t}$ is a user specified relative weight for observation $t$ from gear $k$.  The $ \varpi_{k,t}$ terms allow each observation to be weighted relative to the total error $\rho \varphi^2$; for example, to omit a particular observation, set $\varpi_{k,t}=0$, or to give 2 times the weight, then set  $\varpi_{k,t}=2.0$. For the current assessment, we assumed all observations have the same variance by setting  $\varpi_{k,t}=1$. 
 
-\vspace{2ex}
-\textit{Option for Non-linear CPUE Relationship}
+\newp
+\textit{Option for Density-dependent Catchability}
 
-The option to model relative abundance indices as a power function of vulnerable biomass was added to the version of iSCAM used for this assessment to allow replication of the approach taken in the last Strait of Gerogia Lingcod assessment (Logan et al. 2005).  This approach was taken in 2005 because the qualified commercial CPUE index used as an abunance index was not expected to be linearly related to abundance.  In this case, \eqref{df29} is replaced by:      
+The option to model relative abundance indices as a power function of vulnerable biomass was added to the version of iSCAM used for this assessment to allow replication of the approach taken in the last Strait of Georgia Lingcod assessment (Logan et al. 2005).  This approach was taken in 2005 because the qualified commercial CPUE index used as an abunance index was not expected to be linearly related to abundance.  In this case, \eqref{df29} is replaced by:      
 \begin{equation}\label{df32}
  V_{k,t} = (\sum_s \sum_a N_{t,a,s} e^{-\lambda_{k,t} Z_{t,a,s}} v_{k,a,s} w_{a,s})^{\psi_k}
 \end{equation}
-where $\psi_k$ is an exponent determining the degree of linearity between the CPUE series from gear $k$ and the vulnerable biomass available to gear $k$ in year $t$.  When $\psi_k$ is less than 1, a given change in CPUE implies a greater relative change in exploitable abundance (hyperstability); when $\psi_k$ = 1, CPUE is proportional to abundance; and when $\psi_k$ is greater than 1, a given change in CPUE implies a lesser relative chance in abundance (hyperdepletion).  The $\psi_k$ parameters for each gear $k$ were estimated by Logan et al. (2005); however, we did not attempt to estimate these in our bridging analysis due to concerns of model overparameterization.  Instead, $\psi_k$ was fixed at the values estimated by Logan et al. (2005) in scenarios that used a non-linear CPUE relationship (Table \AppLet.5).        
+where $\psi_k$ is an exponent determining the degree of linearity between the CPUE series from gear $k$ and the vulnerable biomass available to gear $k$ in year $t$, $V_{k,t}$.  When $\psi_k$ is less than 1, a given change in CPUE implies a greater relative change in exploitable abundance (hyperstability); when $\psi_k$ = 1, CPUE is proportional to abundance; and when $\psi_k$ is greater than 1, a given change in CPUE implies a lesser relative chance in abundance (hyperdepletion).  The $\psi_k$ parameters for each gear $k$ used to develop a CPUE index ($k$ = 1 or 2) were estimated by Logan et al. (2005); however, we did not attempt to estimate these in our analyses due to time constraints.  Instead, $\psi_k$ was fixed at the values estimated by Logan et al. (2005) in scenarios that used density-dependent catchability (Table \AppLet.5).        
 
 
 % ********************** Table 5 ************************************
 \begin{table}[tp]
 \leftskip=1.5em
 \parindent=-1.5em
-{\it Table \AppLet.5. Fixed values used for exponent determining degree of linearity between vulnerable biomass and commercial CPUE (cCPUE) or recreational CPUE (rCPUE) series ($\psi_k$  in \eqref{df32}) when non-linear CPUE option selected.  Values are given for three different scenarios about the treatment of historic catch values in SubAreas 28 and 29 (i.e., the southeast quadrant).  }
+{\it Table \AppLet.5. Fixed values used for exponent determining degree of linearity between vulnerable biomass and commercial CPUE (cCPUE) or recreational CPUE (rCPUE) series ($\psi_k$  in \eqref{df32}) when density-dependent catchability is selected.  Values are given for four different scenarios about the treatment of historical catch values from District 1 (i.e., the southeast quadrant).  }
 %\vsd \\
 \leftskip=0em
 \parindent=-0em
@@ -577,7 +583,8 @@ Scenario   &   $\psi_{cCPUE}$       &    $\psi_{rCPUE}$   \\
 \hline %\\[-.5ex]
 SoG & 0.878 & 1.759 \\
 noSE & 0.646 & 0.611 \\
-halfSE & 0.878 & 1.759 \\
+onlySEpre1947 & 0.878 & 1.759 \\
+noSEpre1947 & 0.878 & 1.759 \\
 \hline 
 \end{tabular} 
 \vsd
@@ -667,11 +674,13 @@ where $s_o$ is the maximum juvenile survival rate, and $\beta$ is the density ef
 
 Bayesian estimation was done using the Markov Chain Monte Carlo (MCMC) method to approximate posterior distributions for estimated parameters.  Marginal posterior distributions of each model parameter were constructed by using the metropolis algorithm built into ADMB to sample from the joint posterior distribution.  This was accomplished by running iSCAM in -mcmc mode followed by the -mceval option.  Prior distributions, estimation bounds, and initial values for the MCMC procedure are shown in Table \AppLet.6.  Marginal posterior densities were also produced for derived quantities such as MSY-based reference points using the steady-state age structured model described in Table \AppLet.2 and the associated text above.      
 
+The number of MCMC samples used for each of the 12 Lingcod assessment scenarios is given in Appendix F.  All MCMC sequences had an initial burn-in period removed from teh sequence to eliminate the effects of starting values on posterior distributions.  Thinning was also used to reduce autocorrelation among draws.  Burn-in periods and thinning intervals for each scenario are also summarized in Appendix F.
+
 % ********************** Table 6 ************************************
 \begin{table}[tp]
 \leftskip=1.5em
 \parindent=-1.5em
-{\it Table \AppLet.6. Details for estimation of parameters, including prior distributions with corresponding means and standard deviations, bounds between which parameters are constrained, and initial values.}
+{\it Table \AppLet.6. Details for estimation of parameters, including prior distributions with corresponding means and standard deviations, bounds between which parameters are constrained, and initial values.  Note that the uninformative prior for $\vartheta$ was Gamma(0.001, 0.001), which results in the mean and standard deviation (sd) values provided.}
 %\vsd \\
 \leftskip=0em
 \parindent=-0em
@@ -682,30 +691,36 @@ Bayesian estimation was done using the Markov Chain Monte Carlo (MCMC) method to
  Parameter    &  distribution  &  deviation            & Bounds & value\\ 
 \hline %\\[-.5ex]
 \multicolumn{5}{l}{\underline{SoG}}\\
-$R_0$ & Uniform & -- & [0.5, 3 300 000] & 1 600 000\\
+$R_0$ & Uniform & -- & [0.007, 3 269 017] & 22 026\\
 $h$ & Normal & 1.2, 10 & [0.2, 208] & 0.70\\
 $\bar{R}$ & Uniform & -- & [0.5, 3 300 000] & 89 000 \\
-$\vartheta$ & Gamma & 20, 10 & [0.1, 80] & 20 \\
+$\vartheta$ & Gamma & 20, 10 & [0.01, 100] & 2 \\
 \multicolumn{5}{l}{\underline{noSE}}\\
-\vspace{1ex} \\
-\multicolumn{5}{l}{\underline{halfSE}}\\
-\vspace{1ex} \\
-
+$R_0$ & Uniform & -- & [0.007, 3 269 017] & 148\\
+$h$ & Normal & 1.2, 10 & [0.2, 208] & 0.70\\
+$\bar{R}$ & Uniform & -- & [0.5, 3 300 000] & 89 000 \\
+$\vartheta$ & Gamma & 20, 10 & [0.01, 100] & 2 \\
+\multicolumn{5}{l}{\underline{onlySEpre1947}}\\
+$R_0$ & Uniform & -- & [0.007, 3 269 017] & 22 026\\
+$h$ & Normal & 1.2, 10 & [0.2, 208] & 0.70\\
+$\bar{R}$ & Uniform & -- & [0.5, 3 300 000] & 89 000 \\
+$\vartheta$ & Gamma & 20, 10 & [0.01, 100] & 2 \\
+\multicolumn{5}{l}{\underline{noSEpre1947}}\\
+$R_0$ & Uniform & -- & [0.007, 3 269 017] & 22 026\\
+$h$ & Normal & 1.2, 10 & [0.2, 208] & 0.70\\
+$\bar{R}$ & Uniform & -- & [0.5, 3 300 000] & 89 000 \\
+$\vartheta$ & Gamma & 20, 10 & [0.01, 100] & 2 \\
 \hline 
+\vsd\vspace{50ex}
 \end{tabular} 
-\vsd
+
 \end{center}
 \end{table}
-
-\medskip
-
-
-
-\newpage
+%\newpage
 %\bibliography{../../../abbrev3}
 %\bibliography{../SGR_2013}
-\bibliographystyle{C:/Users/haighr/Files/Archive/Latex/ecology}
-\bibliography{C:/Users/haighr/Files/GFish/PSARC13/SGR/Docs/SGR_2013}
+%\bibliographystyle{C:/Users/haighr/Files/Archive/Latex/ecology}
+%\bibliography{C:/Users/haighr/Files/GFish/PSARC13/SGR/Docs/SGR_2013}
 
 
 \end{document}
